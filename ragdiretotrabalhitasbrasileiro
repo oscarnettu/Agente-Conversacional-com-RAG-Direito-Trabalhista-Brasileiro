@@ -1,0 +1,155 @@
+# ⚖️ Agente Conversacional com RAG — Direito Trabalhista Brasileiro
+
+Projeto desenvolvido como desafio final da trilha **ONE (Oracle Next Education) — AI Tech Builder**, em parceria entre **Alura e Oracle**.
+
+---
+
+## 📖 Sobre o Projeto
+
+Artigos científicos da área jurídica concentram um volume denso de informações — doutrina, jurisprudência, conceitos técnicos e referências legislativas — que exigem leitura atenta e conhecimento prévio para serem compreendidos. Para estudantes de Direito, advogados iniciantes ou qualquer cidadão que precise entender seus direitos trabalhistas, navegar por esse tipo de documento pode ser um desafio real.
+
+Este projeto propõe um **agente conversacional baseado em RAG (Retrieval-Augmented Generation)** capaz de responder perguntas em linguagem natural sobre o conteúdo de um artigo científico de Direito Trabalhista. Em vez de depender apenas do conhecimento interno do modelo, o sistema recupera trechos diretamente do documento antes de formular cada resposta — tornando-as fundamentadas, rastreáveis e confiáveis.
+
+O agente foi desenvolvido para consultar um artigo acadêmico sobre **relações de trabalho, CLT e jurisprudência trabalhista brasileira**, respondendo dúvidas em português de forma acessível.
+
+---
+
+## 🧠 Como Funciona
+
+O pipeline segue a arquitetura clássica de RAG:
+
+```
+Artigo Científico (PDF)
+        ↓
+  Extração de texto (pypdf)
+        ↓
+  Divisão em chunks semânticos
+        ↓
+  Geração de embeddings (Gemini)
+        ↓
+  Armazenamento no ChromaDB
+        ↓
+  Pergunta do usuário (interface Streamlit)
+        ↓
+  Busca por similaridade semântica
+        ↓
+  Contexto recuperado → Gemini gera resposta
+        ↓
+  Resposta exibida no chat
+```
+
+Ao receber uma pergunta, o sistema identifica os trechos mais relevantes do artigo e os envia ao modelo como contexto — garantindo que as respostas sejam baseadas no conteúdo real do documento, não em suposições do modelo.
+
+---
+
+## 🛠️ Tecnologias
+
+| Categoria | Tecnologia |
+|---|---|
+| Linguagem | Python 3.10+ |
+| Leitura de PDF | pypdf |
+| Modelo de Linguagem | Google Gemini (`gemini-flash-latest`) |
+| Embeddings | Google Gemini (`gemini-embedding-001`) |
+| Banco Vetorial | ChromaDB |
+| Interface | Streamlit |
+| Deploy | Oracle Cloud Infrastructure (OCI) |
+| Variáveis de ambiente | python-dotenv |
+| Versionamento | Git & GitHub |
+
+---
+
+## 💬 Exemplos de Uso
+
+**Pergunta:** O que o artigo diz sobre aviso prévio proporcional?
+> Com base no documento, o aviso prévio proporcional foi regulamentado pela Lei 12.506/2011, acrescentando 3 dias por ano de serviço prestado ao mesmo empregador, limitado a 60 dias — totalizando até 90 dias de aviso prévio.
+
+**Pergunta:** Quais são os direitos do trabalhador em caso de demissão sem justa causa?
+> O artigo aponta que, na dispensa sem justa causa, o trabalhador tem direito a: saldo de salário, aviso prévio (trabalhado ou indenizado), 13º proporcional, férias proporcionais acrescidas de 1/3, e saque do FGTS com multa de 40%.
+
+**Pergunta:** O artigo menciona terceirização de atividade-fim?
+> Não localizei essa informação no documento analisado.
+
+> ℹ️ Quando a resposta não está no artigo, o agente informa claramente — sem inventar dados ou extrapolar o conteúdo.
+
+---
+
+## 🚀 Executando Localmente
+
+### Pré-requisitos
+
+- Python 3.10 ou superior
+- Chave de API do [Google Gemini](https://aistudio.google.com/app/apikey) (gratuita)
+
+### Passo a passo
+
+```bash
+# 1. Clone o repositório
+git clone https://github.com/seu-usuario/agente-rag-trabalhista.git
+cd agente-rag-trabalhista
+
+# 2. Crie e ative o ambiente virtual
+python -m venv venv
+# Linux/Mac:
+source venv/bin/activate
+# Windows:
+.\venv\Scripts\activate
+
+# 3. Instale as dependências
+pip install -r requirements.txt
+
+# 4. Configure a chave de API
+# Crie um arquivo .env na raiz do projeto:
+echo "GOOGLE_API_KEY=sua_chave_aqui" > .env
+
+# 5. Processe o documento (cria o banco vetorial)
+python processar_documento.py
+
+# 6. Inicie a aplicação
+streamlit run app.py
+```
+
+A interface abrirá automaticamente em `http://localhost:8501`.
+
+---
+
+## ☁️ Deploy na Oracle Cloud
+
+A aplicação está hospedada em uma instância **Always Free** da Oracle Cloud Infrastructure (OCI):
+
+- **Instância:** VM.Standard.E2.1.Micro
+- **Sistema:** Ubuntu 24.04
+- **Região:** São Paulo (`sa-saopaulo-1`)
+- **Gerenciamento:** serviço `systemd` com reinicialização automática em caso de falha
+
+---
+
+## 📂 Estrutura do Projeto
+
+```
+agente-rag-trabalhista/
+├── app.py                   # Interface do chat (Streamlit)
+├── processar_documento.py   # Processamento do PDF e geração do banco vetorial
+├── requirements.txt         # Dependências
+├── .gitignore
+├── .env                     # Chave de API (não versionado)
+├── data/
+│   └── artigo_trabalhista.pdf   # Documento fonte
+└── README.md
+```
+
+---
+
+## 🎯 Possibilidades de Expansão
+
+- Suporte a múltiplos artigos simultâneos no banco vetorial
+- Filtro por tema jurídico antes da busca semântica
+- Citação automática do trecho do artigo usado na resposta
+- Integração com bases de jurisprudência públicas (TST, TRT)
+
+---
+
+## 👤 Autor
+
+Desenvolvido por Oscar Lucindo Netto 
+
+Trilha ONE — AI Tech Builder | Alura + Oracle
