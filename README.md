@@ -103,7 +103,7 @@ pip install -r requirements.txt
 Crie um arquivo .env na raiz do projeto com base no .env.example:
 
 Snippet de código
-GOOGLE_API_KEY="SUA_CHAVE_API_AQUI"
+GOOGLE_API_KEY="l7KWk6m2NdCZcsPGo7UOqDe9YYe8wmKx"
 💻 Como Executar
 Ingestão dos dados e criação da base vetorial:
 
